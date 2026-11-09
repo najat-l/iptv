@@ -2,7 +2,6 @@ import json
 import urllib.parse
 import urllib.request
 
-# Jouw zenderslijst met de exacte layout-attributen
 CHANNELS = [
     {
         "name": "Al Aoula",
