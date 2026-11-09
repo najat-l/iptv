@@ -2,54 +2,41 @@ import json
 import urllib.parse
 import urllib.request
 
+# Alleen de actieve kanalen die geüpdatet moeten worden
 CHANNELS = [
     {
         "name": "Al Aoula",
         "tvg_id": "AlAoula.ma@SD",
-        "logo": "https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/AlAoula.ma.png",
-        "group": "General",
         "url": "https://snrt.player.easybroadcast.io/events/73_aloula_w1dqfwm",
     },
     {
         "name": "Al Aoula Laâyoune",
         "tvg_id": "LaayouneTV.ma@SD",
-        "logo": "https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/LaayouneTV.ma.png",
-        "group": "General",
         "url": "https://snrt.player.easybroadcast.io/events/73_laayoune_pgagr52",
     },
     {
         "name": "Arryadia",
         "tvg_id": "Arryadia.ma@SD",
-        "logo": "https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/Arryadia.ma.png",
-        "group": "Sports",
         "url": "https://snrt.player.easybroadcast.io/events/73_arryadia_k2tgcj0",
     },
     {
         "name": "Athaqafia",
         "tvg_id": "Athaqafia.ma@SD",
-        "logo": "https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/Athaqafia.ma.png",
-        "group": "Culture",
         "url": "https://snrt.player.easybroadcast.io/events/73_arrabia_hthcj4p",
     },
     {
         "name": "Al Maghribia",
         "tvg_id": "AlMaghribia.ma@SD",
-        "logo": "https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/AlMaghribia.ma.png",
-        "group": "General",
         "url": "https://snrt.player.easybroadcast.io/events/73_almaghribia_83tz85q",
     },
     {
         "name": "Assadissa",
         "tvg_id": "Assadissa.ma@SD",
-        "logo": "https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/Assadissa.ma.png",
-        "group": "Religious",
         "url": "https://snrt.player.easybroadcast.io/events/73_assadissa_7b7u5n1",
     },
     {
         "name": "Tamazight TV",
         "tvg_id": "TamazightTV.ma@SD",
-        "logo": "https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/TamazightTV.ma.png",
-        "group": "General",
         "url": "https://snrt.player.easybroadcast.io/events/73_tamazight_tccybxt",
     },
 ]
@@ -125,16 +112,11 @@ def fetch_fresh_stream_url(raw_url):
 def update_playlist():
   input_filename = "kanalen.m3u"
   output_filename = "kanalen.m3u"
-  user_agent = "Mozilla/5.0"
-  referrer = "https://snrtlive.ma/"
 
-  updated_channels = {}
-  channel_referrers = {}
-
+  # Haal verse URLs op voor de actieve kanalen
+  updated_urls = {}
   for channel in CHANNELS:
-    fresh_url = fetch_fresh_stream_url(channel["url"])
-    updated_channels[channel["tvg_id"]] = fresh_url
-    channel_referrers[channel["tvg_id"]] = referrer
+    updated_urls[channel["tvg_id"]] = fetch_fresh_stream_url(channel["url"])
 
   try:
     with open(input_filename, "r", encoding="utf-8") as f:
@@ -148,43 +130,52 @@ def update_playlist():
   while i < len(lines):
     line = lines[i]
 
+    # Check of het een kanaal-definitie is (#EXTINF)
     if line.startswith("#EXTINF:"):
       matched_tvg_id = None
-      for tvg_id in updated_channels.keys():
+      for tvg_id in updated_urls.keys():
         if f'tvg-id="{tvg_id}"' in line:
           matched_tvg_id = tvg_id
           break
 
       if matched_tvg_id:
-        current_line = line
-        correct_referrer = channel_referrers[matched_tvg_id]
-
-        new_lines.append(current_line)
-        
-        # Sla oude EXTVLCOPT regels over
+        # Behoud de bestaande #EXTINF regel exact zoals hij is
+        new_lines.append(line)
         i += 1
+
+        # Sla eventuele bestaande EXTVLCOPT regels over en vervang ze of houd ze bij
         while i < len(lines) and lines[i].startswith("#EXTVLCOPT:"):
           i += 1
 
-        # Voeg de juiste VLC opties toe
-        new_lines.append(f"#EXTVLCOPT:http-referrer={correct_referrer}\n")
-        new_lines.append(f"#EXTVLCOPT:http-user-agent={user_agent}\n")
+        # Voeg de standaard VLC-opties toe voor deze easybroadcast kanalen
+        new_lines.append("#EXTVLCOPT:http-referrer=https://snrtlive.ma/\n")
+        new_lines.append("#EXTVLCOPT:http-user-agent=Mozilla/5.0\n")
 
-        # Schrijf de nieuwe URL
-        new_url = updated_channels[matched_tvg_id]
-        new_lines.append(f"{new_url}\n")
-        
-        while i < len(lines) and not lines[i].startswith("#EXTINF") and not lines[i].startswith("# ———") and lines[i].strip() != "" and "http" in lines[i]:
+        # Voeg de nieuwe verse URL toe
+        new_lines.append(f"{updated_urls[matched_tvg_id]}\n")
+
+        # Sla de oude URL over in het originele bestand
+        while (
+            i < len(lines)
+            and not lines[i].startswith("#EXTINF")
+            and not lines[i].startswith("# ———")
+            and lines[i].strip() != ""
+            and "http" in lines[i]
+        ):
           i += 1
         continue
 
+    # Alle andere regels (commentaar, scheidingslijnen, uitgeschakelde kanalen zoals Aflam TV) ongewijzigd overnemen
     new_lines.append(line)
     i += 1
 
   with open(output_filename, "w", encoding="utf-8") as f:
     f.writelines(new_lines)
 
-  print(f"Bestand '{output_filename}' succesvol bijgewerkt!")
+  print(
+      f"Bestand '{output_filename}' succesvol bijgewerkt, al het commentaar en"
+      " uitgeschakelde kanalen zijn behouden!"
+  )
 
 
 if __name__ == "__main__":
