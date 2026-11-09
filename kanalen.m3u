@@ -31,26 +31,26 @@ https://cdn.live.easybroadcast.io/abr_corp/73_almaghribia_83tz85q/corp/73_almagh
 #EXTVLCOPT:http-referrer=https://snrtlive.ma/
 #EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://cdn.live.easybroadcast.io/abr_corp/73_assadissa_7b7u5n1/corp/73_assadissa_7b7u5n1_480p/chunks_dvr.m3u8?token=PIXyHlVMQI5l6wNv44X5xySXcvcBENkbEGGEwfwyMYs&token_path=%2Fabr_corp%2F73_assadissa_7b7u5n1%2Fcorp%2F73_assadissa_7b7u5n1_480p&expires=1794232854
-#EXTINF:-1 tvg-id="AflamTV.ma@SD" tvg-logo="https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/AflamTV.ma.png" group-title="Movies" http-referrer="https://livemediama.com/" http-user-agent="Mozilla/5.0",Aflam TV
-#EXTVLCOPT:http-referrer=https://livemediama.com/
-#EXTVLCOPT:http-user-agent=Mozilla/5.0
-https://stream-lb.livemediama.com/aflam/hls/stream_3/playlist.m3u8
+# #EXTINF:-1 tvg-id="AflamTV.ma@SD" tvg-logo="https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/AflamTV.ma.png" group-title="Movies" http-referrer="https://livemediama.com/" http-user-agent="Mozilla/5.0",Aflam TV
+# #EXTVLCOPT:http-referrer=https://livemediama.com/
+# #EXTVLCOPT:http-user-agent=Mozilla/5.0
+# https://stream-lb.livemediama.com/aflam/hls/stream_3/playlist.m3u8
 #EXTINF:-1 tvg-id="TamazightTV.ma@SD" tvg-logo="https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/TamazightTV.ma.png" group-title="General" http-referrer="https://livemediama.com/" http-user-agent="Mozilla/5.0",Tamazight TV
 #EXTVLCOPT:http-referrer=https://snrtlive.ma/
 #EXTVLCOPT:http-user-agent=Mozilla/5.0
 https://cdn.live.easybroadcast.io/abr_corp/73_tamazight_tccybxt/corp/73_tamazight_tccybxt_480p/chunks_dvr.m3u8?token=Rkk6SVoltqLG1iLXjQ-5-JLczoHCCyNCM-SW0SVyCJY&token_path=%2Fabr_corp%2F73_tamazight_tccybxt%2Fcorp%2F73_tamazight_tccybxt_480p&expires=1794232855
-#EXTINF:-1 tvg-id="M24TV.ma" tvg-logo="https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/M24TV.ma.png" group-title="News" http-referrer="https://livemediama.com/" http-user-agent="Mozilla/5.0",M24TV
-#EXTVLCOPT:http-referrer=https://livemediama.com/
-#EXTVLCOPT:http-user-agent=Mozilla/5.0
-https://stream-lb.livemediama.com/m24maroc/hls/stream_3/playlist.m3u8
+# #EXTINF:-1 tvg-id="M24TV.ma" tvg-logo="https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/M24TV.ma.png" group-title="News" http-referrer="https://livemediama.com/" http-user-agent="Mozilla/5.0",M24TV
+# #EXTVLCOPT:http-referrer=https://livemediama.com/
+# #EXTVLCOPT:http-user-agent=Mozilla/5.0
+# https://stream-lb.livemediama.com/m24maroc/hls/stream_3/playlist.m3u8
 #EXTINF:-1 tvg-id="Medi1TVMaghreb.ma" tvg-logo="https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/Medi1TVMaghreb.ma.png" group-title="News",Medi1TV Maghreb
 https://cdn.live.easybroadcast.io/abr_corp/83_medi1tv-maghreb_jnbspmg/playlist.m3u8
 #EXTINF:-1 tvg-id="Medi1TVArabic.ma" tvg-logo="https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/Medi1TVArabic.ma.png" group-title="News",Medi1TV Arabic
 https://cdn.live.easybroadcast.io/abr_corp/83_medi1tv-arabic_g90v4ec/playlist.m3u8
-#EXTINF:-1 tvg-id="TeleMaroc.ma" tvg-logo="https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/TeleMaroc.ma.png" group-title="News" http-referrer="https://livemediama.com/" http-user-agent="Mozilla/5.0",Télé Maroc
-#EXTVLCOPT:http-referrer=https://livemediama.com/
-#EXTVLCOPT:http-user-agent=Mozilla/5.0
-https://stream-lb.livemediama.com/telemaroc/hls/stream_3/playlist.m3u8
+# #EXTINF:-1 tvg-id="TeleMaroc.ma" tvg-logo="https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/TeleMaroc.ma.png" group-title="News" http-referrer="https://livemediama.com/" http-user-agent="Mozilla/5.0",Télé Maroc
+# #EXTVLCOPT:http-referrer=https://livemediama.com/
+# #EXTVLCOPT:http-user-agent=Mozilla/5.0
+# https://stream-lb.livemediama.com/telemaroc/hls/stream_3/playlist.m3u8
 
 # ——————————————— Islam ———————————————
 #EXTINF:-1 tvg-id="AlQuranAlKareemTV.sa" tvg-logo="https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/AlQuranAlKareemTV.sa.png" group-title="Religious",Al Quran Al Kareem TV
