@@ -2,7 +2,6 @@ import json
 import urllib.parse
 import urllib.request
 
-# Alleen de actieve kanalen die geüpdatet moeten worden
 CHANNELS = [
     {
         "name": "Al Aoula",
@@ -113,10 +112,19 @@ def update_playlist():
   input_filename = "kanalen.m3u"
   output_filename = "kanalen.m3u"
 
-  # Haal verse URLs op voor de actieve kanalen
-  updated_urls = {}
+  # Bouw een dictionary op voor de verse URL én de juiste referrer per tvg_id
+  updated_channels = {}
+  channel_referrers = {}
+
   for channel in CHANNELS:
-    updated_urls[channel["tvg_id"]] = fetch_fresh_stream_url(channel["url"])
+    fresh_url = fetch_fresh_stream_url(channel["url"])
+    updated_channels[channel["tvg_id"]] = fresh_url
+    
+    # Bepaal de juiste referrer op basis van de URL
+    if "easybroadcast.io" in channel["url"]:
+      channel_referrers[channel["tvg_id"]] = "https://snrtlive.ma/"
+    else:
+      channel_referrers[channel["tvg_id"]] = "https://livemediama.com/"
 
   try:
     with open(input_filename, "r", encoding="utf-8") as f:
@@ -130,52 +138,53 @@ def update_playlist():
   while i < len(lines):
     line = lines[i]
 
-    # Check of het een kanaal-definitie is (#EXTINF)
     if line.startswith("#EXTINF:"):
       matched_tvg_id = None
-      for tvg_id in updated_urls.keys():
+      for tvg_id in updated_channels.keys():
         if f'tvg-id="{tvg_id}"' in line:
           matched_tvg_id = tvg_id
           break
 
       if matched_tvg_id:
-        # Behoud de bestaande #EXTINF regel exact zoals hij is
-        new_lines.append(line)
-        i += 1
+        # Als het Aflam TV is, moeten we ook de http-referrer in de #EXTINF regel zelf aanpassen naar livemediama.com
+        current_line = line
+        correct_referrer = channel_referrers[matched_tvg_id]
+        
+        if matched_tvg_id == "AflamTV.ma@SD":
+          if 'http-referrer="' not in current_line:
+            # Voeg http-referrer toe aan de #EXTINF regel als die er niet stond
+            current_line = current_line.replace(",Aflam TV", ' http-referrer="https://livemediama.com/",Aflam TV')
+          else:
+            # Of pas hem aan indien nodig
+            current_line = current_line.replace('http-referrer=".*?"', 'http-referrer="https://livemediama.com/"')
 
-        # Sla eventuele bestaande EXTVLCOPT regels over en vervang ze of houd ze bij
+        new_lines.append(current_line)
+        
+        # Sla oude EXTVLCOPT regels over
+        i += 1
         while i < len(lines) and lines[i].startswith("#EXTVLCOPT:"):
           i += 1
 
-        # Voeg de standaard VLC-opties toe voor deze easybroadcast kanalen
-        new_lines.append("#EXTVLCOPT:http-referrer=https://snrtlive.ma/\n")
-        new_lines.append("#EXTVLCOPT:http-user-agent=Mozilla/5.0\n")
+        # Voeg de juiste VLC opties toe (met de specifieke referrer voor dit kanaal)
+        new_lines.append(f"#EXTVLCOPT:http-referrer={correct_referrer}\n")
+        new_lines.append(f"#EXTVLCOPT:http-user-agent={user_agent}\n")
 
-        # Voeg de nieuwe verse URL toe
-        new_lines.append(f"{updated_urls[matched_tvg_id]}\n")
-
+        # Schrijf de nieuwe URL
+        new_url = updated_channels[matched_tvg_id]
+        new_lines.append(f"{new_url}\n")
+        
         # Sla de oude URL over in het originele bestand
-        while (
-            i < len(lines)
-            and not lines[i].startswith("#EXTINF")
-            and not lines[i].startswith("# ———")
-            and lines[i].strip() != ""
-            and "http" in lines[i]
-        ):
+        while i < len(lines) and not lines[i].startswith("#EXTINF") and not lines[i].startswith("# ———") and lines[i].strip() != "" and "http" in lines[i]:
           i += 1
         continue
 
-    # Alle andere regels (commentaar, scheidingslijnen, uitgeschakelde kanalen zoals Aflam TV) ongewijzigd overnemen
     new_lines.append(line)
     i += 1
 
   with open(output_filename, "w", encoding="utf-8") as f:
     f.writelines(new_lines)
 
-  print(
-      f"Bestand '{output_filename}' succesvol bijgewerkt, al het commentaar en"
-      " uitgeschakelde kanalen zijn behouden!"
-  )
+  print(f"Bestand '{output_filename}' succesvol bijgewerkt met correcte referrers per kanaal!")
 
 
 if __name__ == "__main__":
