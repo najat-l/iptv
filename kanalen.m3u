@@ -224,3 +224,9 @@ https://amg01415-waterbearnetwor-waterbear-samsunguk-1h0y8.amagi.tv/playlist/amg
 https://amg00861-terninternation-inwonder-samsungau-1k63k.amagi.tv/playlist/amg00861-terninternation-inwonder-samsungau/playlist.m3u8
 #EXTINF:-1 tvg-id="InTrouble.nl@SD" tvg-logo="https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/InTrouble.nl.png" group-title="Documentary",InTrouble
 https://amg00861-amg00861c6-rlaxx-uk-3951.playouts.now.amagi.tv/playlist.m3u8
+
+
+#EXTINF:-1 tvg-id="HannibalTV1.tn@SD" tvg-logo="https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/HannibalTV.png" group-title="General",Hannibal TV 1
+https://tgn.tulixcdn.com/gin-36bay3/ga-hannibaltv/index.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9MTEvOS8yMDI2IDE6MzE6NTkgUE0maGFzaF92YWx1ZT16NHVLN1hQS28zdmQ4azlnc1RGS1B3PT0mdmFsaWRtaW51dGVzPTE0NDUmc3RybV9sZW49MjQ=
+#EXTINF:-1 tvg-id="HannibalTV2.tn@SD" tvg-logo="https://raw.githubusercontent.com/najat-l/iptv/refs/heads/main/images/HannibalTV.png" group-title="General",Hannibal TV 2
+https://games1.elahmad.store/tv24_www_elahmad._hannibal/index.m3u8?token=45b5a3a0cdb77c0ce090977f0cba045df0770f06-0ad7c6dd758289c36e9327b93b07a72e-1794233119-1794231319&remote=2a02:a473:f030:0:b9fc:370e:d6da:805a
